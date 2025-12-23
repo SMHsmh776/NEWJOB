@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线购物折扣网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>在线购物折扣网站</h1>
+        <form id="orderForm">
+            客户名称: <input type="text" id="customerName"><br><br>
+            商品单价: <input type="number" id="price" step="0.01"><br><br>
+            数量: <input type="number" id="quantity" min="1"><br><br>
+            客户类型: 
+            <select id="isVip">
+                <option value="false">普通客户</option>
+                <option value="true">VIP客户</option>
+            </select><br><br>
+            是否加急: 
+            <select id="isUrgent">
+                <option value="false">否</option>
+                <option value="true">是</option>
+            </select><br><br>
+            <input type="button" value="添加订单" onclick="calculateTotal()">
+        </form>
+        <div id="tips"></div>
+        <div id="dashboard"></div>
+    </div>
+
+    <script>
+        // 存储成交历史
+        let orderHistory = [];
+
+        // 计算总价并显示折扣信息
+        function calculateTotal() {
+            let customerName = document.getElementById('customerName').value;
+            let price = parseFloat(document.getElementById('price').value);
+            let quantity = parseInt(document.getElementById('quantity').value);
+            let isVip = document.getElementById('isVip').value === "true";
+            let isUrgent = document.getElementById('isUrgent').value === "true";
+
+            // 校验数据
+            if (!customerName) {
+                alert('客户名称不能为空');
+                return;
+            }
+            if (price <= 0) {
+                alert('商品单价必须是大于 0 的数字');
+                return;
+            }
+            if (quantity <= 0) {
+                alert('数量必须是大于 0 的整数');
+                return;
+            }
+
+            // 计算各项价格
+            let baseTotal = price * quantity;
+            let afterVip = isVip ? baseTotal * 0.9 : baseTotal;
+            let afterUrgent = isUrgent ? afterVip * 1.1 : afterVip;
+            let now = new Date();
+            let minute = now.getMinutes();
+            let hitTimeDiscount = minute >= 0 && minute < 10; // 前十分钟
+            let finalTotal = hitTimeDiscount ? afterUrgent * 0.85 : afterUrgent;
+
+            // 学号9的特殊条件：当「客户是VIP且所有折扣后的金额<基础金额的70%」时，最终金额降到基础金额的70%
+            if (isVip && (finalTotal < baseTotal * 0.7)) {
+                finalTotal = baseTotal * 0.7;
+            }
+
+            // 显示各项价格
+            let tipsHtml = [
+                `客户名称: ${customerName}`,
+                `商品单价: ${price}`,
+                `数量: ${quantity}`,
+                `客户类型: ${isVip ? 'VIP客户' : '普通客户'}`,
+                `是否加急: ${isUrgent ? '是' : '否'}`,
+                `正常总价: ${baseTotal}`,
+                `VIP折扣后总价: ${afterVip}`,
+                `加急后总价: ${afterUrgent}`,
+                `${hitTimeDiscount ? '享受' : '不享受'}时间折扣(前10分钟85折)`,
+                `最终总价: ${finalTotal}`
+            ];
+
+            document.getElementById('tips').innerHTML = '<p>' + tipsHtml.join('<br>') + '</p>';
+
+            // 添加到成交历史
+            orderHistory.push({
+                customerName,
+                price,
+                quantity,
+                isVip,
+                isUrgent,
+                baseTotal,
+                afterVip,
+                afterUrgent,
+                hitTimeDiscount,
+                finalTotal,
+                date: now.toISOString()
+            });
+
+            // 更新卖家仪表盘
+            renderDashboard();
+        }
+
+        // 更新卖家仪表盘，显示成交历史
+        function renderDashboard() {
+            let dashboard = document.getElementById('dashboard');
+            let html = '<h2>成交历史</h2><table><tr><th>客户名称</th><th>商品单价</th><th>数量</th><th>客户类型</th><th>是否加急</th><th>正常总价</th><th>VIP折扣后总价</th><th>加急后总价</th><th>时间折扣</th><th>最终总价</th><th>日期</th></tr>';
+            orderHistory.forEach(order => {
+                html += `<tr><td>${order.customerName}</td><td>${order.price}</td><td>${order.quantity}</td><td>${order.isVip ? 'VIP客户' : '普通客户'}</td><td>${order.isUrgent ? '是' : '否'}</td><td>${order.baseTotal}</td><td>${order.afterVip}</td><td>${order.afterUrgent}</td><td>${order.hitTimeDiscount ? '是' : '否'}</td><td>${order.finalTotal}</td><td>${new Date(order.date).toLocaleString()}</td></tr>`;
+            });
+            html += '</table>';
+            dashboard.innerHTML = html;
+        }
+
+        // 显示折扣和加价提醒
+        document.write('<p>购物网页折扣提醒：VIP客户享受9折优惠，加急服务需额外支付10%费用，前10分钟下单享受85折。</p>');
+
+        // 模拟时钟并显示折扣信息
+        function updateClock() {
+            let now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            let day = now.getDay();
+            let date = now.getDate();
+            let month = now.getMonth() + 1;
+            let year = now.getFullYear();
+            let timeString = `${hours}:${minutes}:${seconds} ${day}/${date}/${month}/${year}`;
+            let hitTimeDiscount = minutes >= 0 && minutes < 10; // 前十分钟
+            document.write(`<p>当前时间：${timeString}，${hitTimeDiscount ? '前10分钟下单享受85折' : '当前时间无折扣'}</p>`);
+        }
+        updateClock();
+
+        // 拦截错误数据（示例）
+        function validateInput(input, type) {
+            if (type === 'number' && isNaN(input)) {
+                alert('请输入有效的数字');
+                return false;
+            }
+            if (type === 'string' && input.trim() === '') {
+                alert('输入不能为空');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
