@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>大提琴社招新网站</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .header { background-color: #f8f8f8; padding: 20px; text-align: center; }
+        .nav { position: fixed; left: 0; top: 30%; width: 100px; background: #eee; }
+        .nav a { display: block; padding: 10px; text-align: center; }
+        .content { margin-left: 120px; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        .back-top { position: fixed; right: 20px; bottom: 20px; }
+        .gallery { text-align: center; margin: 20px; }
+        .video-container { text-align: center; margin: 20px; }
+    </style>
+</head>
+<body>
+    <!-- 背景音乐 -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+    <button onclick="document.getElementById('bgMusic').play()">播放背景音乐</button>
+
+    <!-- 导航链接 -->
+    <div class="nav">
+        <a href="#intro">社团简介</a>
+        <a href="#schedule">活动安排</a>
+        <a href="#gallery">风采展示</a>
+        <a href="#stories">社员故事</a>
+        <a href="#register">在线报名</a>
+    </div>
+
+    <!-- 各部分内容 -->
+    <div class="header">
+        <h1>大提琴社招新啦！</h1>
+    </div>
+
+    <div id="intro" class="content">
+        <h2>社团简介</h2>
+        <p>大提琴社成立于2025年，致力于推广大提琴文化，定期举办演奏会、音乐讲座等活动。我们欢迎所有热爱音乐、热爱大提琴的同学加入，共同感受大提琴的魅力。</p>
+        <a href="#" class="back-top">返回顶部</a>
+    </div>
+
+    <div id="schedule" class="content">
+        <h2>活动安排</h2>
+        <table>
+            <tr>
+                <th colspan="4">大提琴社 2025年春季学期活动安排表</th>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: center;">第二行内容居中显示</td>
+            </tr>
+            <tr>
+                <td>新成员见面会</td>
+                <td>大提琴基础教学公开课</td>
+                <td colspan="2">同一教室活动</td>
+            </tr>
+            <tr>
+                <td>时间：3月15日</td>
+                <td>时间：3月22日</td>
+                <td>地点：音乐厅A</td>
+                <td>备注：请携带大提琴</td>
+            </tr>
+        </table>
+        <a href="#" class="back-top">返回顶部</a>
+    </div>
+
+    <div id="gallery" class="content">
+        <h2>风采展示</h2>
+        <div class="gallery">
+            <a href="club_intro.html">
+                <img src="file-755080747799109.jpg" alt="大提琴社日常演奏" style="width:300px;">
+            </a>
+        </div>
+        <div class="video-container">
+            <video width="640" height="360" controls>
+                <source src="cello_video.mp4" type="video/mp4">
+            </video>
+        </div>
+        <a href="#" class="back-top">返回顶部</a>
+    </div>
+
+    <div id="stories" class="content">
+        <h2>社员故事</h2>
+        <p>记得第一次拿起大提琴时，那沉甸甸的琴身和悠扬的音色让我瞬间着迷。在社团里，我遇到了许多志同道合的朋友，我们一起练习、一起演出，共同成长。大提琴不仅是我的乐器，更是我的伙伴，它陪伴我度过了许多难忘的时光。</p>
+        <a href="#" class="back-top">返回顶部</a>
+    </div>
+
+    <div id="register" class="content">
+        <h2>在线报名表</h2>
+        <form action="/submit" method="post">
+            <table>
+                <tr><td>姓名</td><td><input type="text" name="name"></td></tr>
+                <tr><td>性别</td><td>
+                    <input type="radio" name="gender" value="男">男
+                    <input type="radio" name="gender" value="女">女
+                </td></tr>
+                <tr><td>出生日期</td><td>
+                    <input type="text" name="birth_year" placeholder="年">
+                    <input type="text" name="birth_month" placeholder="月">
+                    <input type="text" name="birth_day" placeholder="日">
+                </td></tr>
+                <tr><td>手机</td><td><input type="text" name="phone"></td></tr>
+                <tr><td>邮箱</td><td><input type="text" name="email"></td></tr>
+                <tr><td>是否有大提琴基础</td><td>
+                    <input type="radio" name="basis" value="有">有
+                    <input type="radio" name="basis" value="无">无
+                </td></tr>
+                <tr><td>兴趣方向</td><td>
+                    <input type="checkbox" name="interest" value="独奏">独奏
+                    <input type="checkbox" name="interest" value="合奏">合奏
+                </td></tr>
+                <tr><td>年级</td><td>
+                    <select name="grade">
+                        <option>大一</option><option>大二</option>
+                        <option>大三</option><option>大四</option>
+                        <option>研究生</option>
+                    </select>
+                </td></tr>
+                <tr><td>自我介绍</td><td>
+                    <textarea name="intro" placeholder="请简单介绍自己、以及加入大提琴社的理由..."></textarea>
+                </td></tr>
+                <tr><td>是否服从活动安排</td><td>
+                    <input type="radio" name="obey" value="是">是
+                    <input type="radio" name="obey" value="否">否
+                </td></tr>
+                <tr><td colspan="2">
+                    <input type="submit" value="提交">
+                    <input type="reset" value="重置">
+                </td></tr>
+            </table>
+        </form>
+        <a href="#" class="back-top">返回顶部</a>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <a href="#" class="back-top">↑ 返回顶部</a>
+</body>
+</html>
